@@ -11,16 +11,27 @@ class Connect:
         self.client.close()
     def show_statistics(self):
         stats = ["position", "clealiness", "quality/price", "service", "average vote"]
+        nations=[]
         not_selected=True
-        while(not_selected):
-            for item in options:
+        while (not_selected):
+            for item in nations:
                 print(item + "\n")
             print("Select an option:\n")
             chosen = input()
             if chosen not in options:
                 print("The selected option is not valid. Please try again: \n")
             else:
-                not_selected=False
+                not_selected = False
+
+        while(not_selected==False):
+            for item in stats:
+                print(item + "\n")
+            print("Select an option:\n")
+            chosen = input()
+            if chosen not in options:
+                print("The selected option is not valid. Please try again: \n")
+            else:
+                not_selected=True
         # chosen contiene l'attributo rispetto a cui fare statistica
     def make_statistic(self, chosen):
         print("TODO")
