@@ -1,21 +1,11 @@
 import os
 import pymongo
-import logging
 
 
-class MongoConnection:
-    def __init__(self, name):
-        self._isEmpty = True
-        self.client = pymongo.MongoClient("mongodb://localhost:27017/")
-        self.dbName = name
-        self.db = self.client[name]
+class Connect:
 
-    def checkConnection(self):
-        if self._isEmpty == False:
-            return False
-        else:
-            if self.dbName in self.db.list_database_names():
-                return True
+    def __init__(self):
+        self.client = pymongo.MongoClient('mongodb://localhost:27017/')
 
 
 if __name__ == '__main__':
@@ -34,9 +24,9 @@ if __name__ == '__main__':
             if pid == 0:  # child process
 
                 if chosen == options[0]:  # login
-                    mongodb = MongoConnection()
+                    mongodb = Connect()
 
                 if chosen == options[1]:  # register
-                    mongodb = MongoConnection()
-                if chosen == options[2]:
-                    mongodb = MongoConnection()
+                    mongodb = Connect()
+                if chosen == options[2]: #analitycs
+                    mongodb = Connect()
