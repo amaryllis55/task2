@@ -15,6 +15,7 @@ if __name__ == '__main__':
 
     options = ["login", "register", "read analytics", "read statistics"]
     stats=["position", "clealiness", "quality/price",  "service", "average vote" ]
+
     print("Options:\n")
     for item in options:
         print(item + "\n")
@@ -29,16 +30,16 @@ if __name__ == '__main__':
 
                 if chosen == options[0]:  # login
                     mongodb = Connect()
-                    mongodb.client.close()
-
+                    mongodb.close()
                 if chosen == options[1]:  # register
                     mongodb = Connect()
-                    mongodb.client.close()
+                    mongodb.close()
                 if chosen == options[2]: #analitycs
                     mongodb = Connect()
                     mongodb.client.close()
-                if chosen == options[3]:  # analitycs
+                if chosen == options[3]:  # statistics
                     mongodb = Connect()
-                    mongodb.client.close()
+                    mongodb.close()
+
 
 
