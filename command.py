@@ -11,8 +11,9 @@ class Connect:
         self.client.close()
     def show_statistics(self):
         stats = ["position", "clealiness", "quality/price", "service", "average vote"]
-        nations=[]
+        nations=["Russia", "Polonia", "Italia", "Firenze", "San Pietroburgo", "Cracovia", "Breslavia"]
         not_selected=True
+
         while (not_selected):
             for item in nations:
                 print(item + "\n")
@@ -33,6 +34,7 @@ class Connect:
             else:
                 not_selected=True
         # chosen contiene l'attributo rispetto a cui fare statistica
+
     def make_statistic(self, chosen):
         print("TODO")
 
@@ -64,6 +66,7 @@ if __name__ == '__main__':
                     mongodb.client.close()
                 if chosen == options[3]:  # statistics
                     mongodb = Connect()
+                    mongodb.show_statistics()
                     mongodb.close()
 
 
