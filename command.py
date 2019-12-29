@@ -1,6 +1,5 @@
 import os
 import pymongo
-import getpass
 
 
 class Connect:
@@ -15,7 +14,7 @@ class Connect:
         stats = ["position", "clealiness", "quality/price", "service", "average vote"]
         nations = ["Russia", "Polonia", "Italia", "Firenze", "San Pietroburgo", "Cracovia", "Breslavia"]
         not_selected = True
-
+        chosen = None
         while (not_selected):
             for item in nations:
                 print(item + "\n")
@@ -33,6 +32,8 @@ class Connect:
             chosen = input()
             if chosen in options:
                 not_selected = True
+        if chosen != None:
+            self.make_statistic(chosen)
         # chosen contiene l'attributo rispetto a cui fare statistica
 
     def make_statistic(self, chosen):
