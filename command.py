@@ -7,6 +7,8 @@ class Connect:
 
     def __init__(self):
         self.client = pymongo.MongoClient('mongodb://localhost:27017/')
+        self.hotels=[]
+        self.rewierers=[]
 
     def close(self):
         self.client.close()
