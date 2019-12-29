@@ -85,16 +85,12 @@ if __name__ == '__main__':
         else:
             pid = os.fork()
             if pid == 0:  # child process
-
+                mongodb = Connect()
                 if chosen == options[0]:  # login
-                    mongodb = Connect()
                     mongodb.close()
                 if chosen == options[1]:  # register
-                    mongodb = Connect()
                     mongodb.close()
                 if chosen == options[2]:  # analitycs
-                    mongodb = Connect()
                     mongodb.client.close()
                 if chosen == options[3]:  # statistics
-                    mongodb = Connect()
                     mongodb.close()
