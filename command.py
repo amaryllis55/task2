@@ -13,8 +13,8 @@ class Statistics_Manager:
                 print(item + "\n")
             print("Select an option:\n")
             chosen = input()
-            if chosen not in options:
-                print("The selected option is not valid. Please try again: \n")
+            if chosen not in nations:
+                print("The selected nation is not valid. Please try again: \n")
             else:
                 not_selected = False
 
@@ -37,9 +37,16 @@ class Connect:
 
     def __init__(self):
         self.client = pymongo.MongoClient('mongodb://localhost:27017/')
+        self.stats_manager = None
+
 
     def close(self):
         self.client.close()
+
+    def statistics(self):
+        if self.stats_manager is None:
+            self.stats_manager = Statistics_Manager()
+        self.stats_manager.show_statistics()
 
 
 class Review:
@@ -61,7 +68,6 @@ class Hotel:
         self.serviceRating = serviceRating
         self.description = description
         self.rewiews = []
-        self.stats_manager = None
 
     def computeAverageRating(self, avgB, numB, avgT, numT):
         self.avgRating = (avgB * numB + avgT * numT) / self.numberReview
@@ -72,10 +78,6 @@ class Hotel:
     def addReview(self, vote):
         print("TODO")
 
-    def statistics(self):
-        if self.stats_manager is None:
-            self.stats_manager = Statistics_Manager()
-        self.stats_manager.show_statistics()
 
 
 if __name__ == '__main__':
@@ -105,4 +107,5 @@ if __name__ == '__main__':
                     mongodb.client.close()
                 if chosen == options[3]:  # statistics
                     mongodb = Connect()
+                    mongodb.statistics()
                     mongodb.close()
