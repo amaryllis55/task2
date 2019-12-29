@@ -70,12 +70,12 @@ if __name__ == '__main__':
                         print(item + "\n")
                     print("Select an option:")
                     place = input()
-                    mongodb.show_statistics(type, place)
+                    mongodb.show_statistics(type, "CityID")
 
                 elif type == "nation":
                     for item in mongodb.cities:
                         print(item + "\n")
                     print("Select an option:")
                     place = input()
-                    mongodb.show_statistics(type, place)
+                    mongodb.show_statistics(type, "NationID")
                 mongodb.close()
