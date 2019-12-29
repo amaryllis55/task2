@@ -2,14 +2,7 @@ import os
 import pymongo
 
 
-class Connect:
-
-    def __init__(self):
-        self.client = pymongo.MongoClient('mongodb://localhost:27017/')
-
-    def close(self):
-        self.client.close()
-
+class Statistics_Manager:
     def show_statistics(self):
         stats = ["position", "clealiness", "quality/price", "service", "average vote"]
         nations = ["Russia", "Polonia", "Italia", "Firenze", "San Pietroburgo", "Cracovia", "Breslavia"]
@@ -40,6 +33,15 @@ class Connect:
         print("TODO")
 
 
+class Connect:
+
+    def __init__(self):
+        self.client = pymongo.MongoClient('mongodb://localhost:27017/')
+
+    def close(self):
+        self.client.close()
+
+
 class Review:
     def __init__(self, vote, text, year, month):
         self.vote = vote
@@ -49,7 +51,7 @@ class Review:
 
 
 class Hotel:
-    def __init__(self, name, serviceRating, numberReview, cleaninessRating, positionRating, qualityPriceRating,
+    def __init__(self, name, numberReview, serviceRating, cleaninessRating, positionRating, qualityPriceRating,
                  description):
         self.name = name
         self.numberReview = numberReview
@@ -59,6 +61,7 @@ class Hotel:
         self.serviceRating = serviceRating
         self.description = description
         self.rewiews = []
+        self.stats_manager = None
 
     def computeAverageRating(self, avgB, numB, avgT, numT):
         self.avgRating = (avgB * numB + avgT * numT) / self.numberReview
@@ -68,6 +71,11 @@ class Hotel:
 
     def addReview(self, vote):
         print("TODO")
+
+    def statistics(self):
+        if self.stats_manager is None:
+            self.stats_manager = Statistics_Manager()
+        self.stats_manager.show_statistics()
 
 
 if __name__ == '__main__':
@@ -85,12 +93,16 @@ if __name__ == '__main__':
         else:
             pid = os.fork()
             if pid == 0:  # child process
-                mongodb = Connect()
+
                 if chosen == options[0]:  # login
+                    mongodb = Connect()
                     mongodb.close()
                 if chosen == options[1]:  # register
+                    mongodb = Connect()
                     mongodb.close()
                 if chosen == options[2]:  # analitycs
+                    mongodb = Connect()
                     mongodb.client.close()
                 if chosen == options[3]:  # statistics
+                    mongodb = Connect()
                     mongodb.close()
