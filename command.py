@@ -24,11 +24,18 @@ class Connect:
             print("Select an option:\n")
             chosen = input()
             if chosen in stats:
-                not_selected = True
                 self.make_statistic(chosen)
+                not_selected=True
 
     def make_statistic(self, chosen):
-        print("TODO: " + chosen)
+        db = self.client.test_database
+        coll=db.collection
+        numPos=db.collection.count({chosen: {"$gt": 7}})
+        numNeg=db.collection.count({chosen: {"$gt": 4}})
+        numMed= db.collection.count()-(numPos+numNeg)
+
+
+
 
 
 if __name__ == '__main__':

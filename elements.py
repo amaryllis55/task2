@@ -18,7 +18,6 @@ class Hotel:
         self.qualityPriceRating = qualityPriceRating
         self.serviceRating = serviceRating
         self.description = description
-        self.rewiews = []
 
     def computeAverageRating(self, avgB, numB, avgT, numT):
         self.avgRating = (avgB * numB + avgT * numT) / self.numberReview
