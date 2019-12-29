@@ -13,9 +13,8 @@ class Connect:
     def close(self):
         self.client.close()
 
-    def show_statistics(self):
+    def show_statistics(self, place, type):
         stats = ["position", "cleanliness", "quality/price", "service", "average vote"]
-        chosen = []
         not_selected = False
 
         while (not_selected == False):
@@ -24,15 +23,16 @@ class Connect:
             print("Select an option:\n")
             chosen = input()
             if chosen in stats:
-                self.make_statistic(chosen)
+                self.make_statistic(chosen, place, type)
                 not_selected=True
 
-    def make_statistic(self, chosen):
+    def make_statistic(self, chosen, place, type):
         db = self.client.test_database
-        coll=db.collection
-        numPos=db.collection.count({chosen: {"$gt": 7}})
-        numNeg=db.collection.count({chosen: {"$gt": 4}})
-        numMed= db.collection.count()-(numPos+numNeg)
+        coll=db.hotels
+        numPos=db.hotels.count({ "$and":[{chosen: {"$gt": 6}},{type:place}] } )
+        numNeg=db.hotels.count({ "$and":[{chosen: {"$lt": 5}},{type:place}] } )
+        numMed= db.hotels.count({type:place})-(numPos+numNeg)
+
 
 
 
