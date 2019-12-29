@@ -3,22 +3,18 @@ import pymongo
 import elements
 
 
-
 class Connect:
 
     def __init__(self):
         self.client = pymongo.MongoClient('mongodb://localhost:27017/')
-        self.stats_manager = None
-
 
     def close(self):
         self.client.close()
 
     def show_statistics(self):
         stats = ["position", "cleanliness", "quality/price", "service", "average vote"]
-        chosen=[]
+        chosen = []
         not_selected = False
-
 
         while (not_selected == False):
             for item in stats:
@@ -28,8 +24,11 @@ class Connect:
             if chosen in stats:
                 not_selected = True
                 self.make_statistic(chosen)
+
     def make_statistic(self, chosen):
-        print("TODO: "+chosen)
+        print("TODO: " + chosen)
+
+
 if __name__ == '__main__':
 
     options = ["login", "register", "read analytics", "read statistics"]
@@ -57,6 +56,3 @@ if __name__ == '__main__':
                 mongodb = Connect()
                 mongodb.show_statistics()
                 mongodb.close()
-
-
-
