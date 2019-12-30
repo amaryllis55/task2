@@ -1,5 +1,6 @@
 import os
 import pymongo
+import datetime
 import elements
 
 
@@ -9,6 +10,8 @@ class Connect:
         self.client = pymongo.MongoClient('mongodb://localhost:27017/')
         self.cities = [["Firenze", 4343]]
         self.nations = [["Russia", 9090]]
+        self.dates = {"jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6, "jul": 7, "aug": 8, "sep": 9,
+                      "oct": 10, "nov": 11, "dec": 12}
         self.dictionary = {}  # contiene i codici corrispondenti a città e nazione
 
         for item in self.cities:
@@ -41,17 +44,39 @@ class Connect:
             elif plt == "nation":
                 for item in self.nations:
                     print(item[0])
-                nation=input("Select nation:\n")
+                nation = input("Select nation:\n")
                 if nation in self.dictionary.keys():
                     self.computeAnalysis(self.dictionary[nation], "NationID")
 
-
-
-
-
-
     def computeAnalysis(self, place, type):
-        print("pippo")
+        now = datetime.datetime.now()  # current date and time
+        day = now.strftime("%d")
+        month = now.strftime("%m")
+        year = now.strftime("%Y")
+
+        # suppongo di voler prendere da dicembre 2018 a dicembre 2019
+
+        db = self.client.test_databahse
+        hotel_list = db.hotels.find({type: place})
+        # hotel_list contiene tutti gli hotel nel posto place
+        averall_avgs = []
+        for hotel in hotel_list:
+            averages = []
+            for i in range(12):
+                averages.append([])
+            for id in hotel["reviewList"]:
+                rew = db.findOne({"_id": id})
+                result = self.isAntecedent(rew["Day"], rew["Month"], rew[
+                    "Year"])
+                if result:
+                    print("TODO")
+
+    def isAntecedent(self, day, month, year):
+        current_year = datetime.datetime.now().strftime("%Y")
+        if int(current_year) - int(year) <= 1 and self.dates[day]>=datetime.datetime.now().strftime("%d"):
+            return True
+        return False
+
     def manageStatistics(self):
         opt = ["averageRating", "serviceRating", "cleanlinessRating", "positionRating"]
         for item in opt:
@@ -74,7 +99,6 @@ class Connect:
 
     def computeAvg(self, chosen, place, type):
         db = self.client.test_database
-        coll = db.hotels
         numPos = db.hotels.count_documents({"$and": [{chosen: {"$gt": 6}}, {type: place}]})
         numNeg = db.hotels.count_documents({"$and": [{chosen: {"$lt": 5}}, {type: place}]})
         numMed = db.hotels.count_documents({type: place}) - (numPos + numNeg)
@@ -103,6 +127,7 @@ if __name__ == '__main__':
             mongodb.close()
         if chosen == options[2]:  # analitycs
             mongodb = Connect()
+            mongodb.manageAnalytics()
             mongodb.close()
         if chosen == options[3]:  # statistics
             mongodb = Connect()
