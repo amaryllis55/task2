@@ -57,15 +57,24 @@ class Connect:
         # hotel_list contiene tutti gli hotel nel posto place
         averall_avgs = []
         for hotel in hotel_list:
+
             averages = []
             for i in range(12):
                 averages.append([])
             for id in hotel["reviewList"]:
                 rew = db.findOne({"_id": id})
-                result = self.isAntecedent(rew["Day"], rew["Month"], rew[
-                    "Year"])
-                if result:
-                    print("TODO")
+                #result = self.isAntecedent(rew["Day"], rew["Month"], rew[ "Year"])
+                if rew["Year"]== int(datetime.datetime.now().strftime("%Y")):
+                    averages[self.dates[datetime.datetime.now().strftime("%m")]-1].append(rew["Vote"])
+                    for i in range(len(averages)):
+                        temp = 0
+                        count = len(averages[i])
+                        for it in averages[i]:
+                            temp += it
+                        averages[i] = temp / count
+                    averall_avgs.append([hotel["_id"], averages])
+
+
 
     def isAntecedent(self, day, month, year):
         current_year = datetime.datetime.now().strftime("%Y")
