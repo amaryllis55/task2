@@ -7,31 +7,54 @@ class Connect:
 
     def __init__(self):
         self.client = pymongo.MongoClient('mongodb://localhost:27017/')
-        self.cities = ["Firenze"]
-        self.nations = ["Russia"]
+        self.cities = [["Firenze", 4343]]
+        self.nations = [["Russia", 9090]]
+        self.dictionary={}#contiene i codici corrispondenti a città e nazione
+
+        for item in self.cities:
+            if item[0] not in self.dictionary.keys():
+                self.dictionary[item[0]]=item[1]
+        for item in self.nations:
+            if item[0] not in self.dictionary.keys():
+                self.dictionary[item[0]]=item[1]
+
+    def updateDict(self, name, code):
+        if name not in self.dictionary.keys():
+            self.dictionary[name]=code
 
     def close(self):
         self.client.close()
 
-    def show_statistics(self, place, type):
-        stats = ["position", "cleanliness", "quality/price", "service", "average vote"]
-        not_selected = False
+    def manageStatistics(self):
+        opt=["averageRating", "serviceRating","cleanlinessRating", "positionRating"]
+        for item in opt:
+            print(item + "\n")
+        chosen=input("Select evaluation attribute:\n")
+        if chosen in opt:
+            plt = input("Select city or nation:\n")
+            if plt == "city":
+                for item in self.cities:
+                    print(item + "\n")
+                city = input("Select city:\n")
+                if city in self.dictionary.keys():
+                    self.computeAvg(chosen, self.dictionary[city], "CityID")
+            elif plt=="nation":
+                for item in self.nations:
+                    print(item + "\n")
+                nation = input("Select city:\n")
+                if nation in self.dictionary.keys():
+                    self.computeAvg(chosen, self.dictionary[nation], "NationID")
 
-        while (not_selected == False):
-            for item in stats:
-                print(item + "\n")
-            print("Select an attribute:\n")
-            chosen = input()
-            if chosen in stats:
-                self.make_statistic(chosen, place, type)
-                not_selected = True
 
-    def make_statistic(self, chosen, place, type):
+
+
+    def computeAvg(self, chosen, place, type):
         db = self.client.test_database
         coll = db.hotels
         numPos = db.hotels.count({"$and": [{chosen: {"$gt": 6}}, {type: place}]})
         numNeg = db.hotels.count({"$and": [{chosen: {"$lt": 5}}, {type: place}]})
         numMed = db.hotels.count({type: place}) - (numPos + numNeg)
+        #plot?
 
 
 if __name__ == '__main__':
@@ -42,9 +65,9 @@ if __name__ == '__main__':
     for item in options:
         print(item + "\n")
     print("Select an option:\n")
-    while (True):
-        chosen = input()
 
+    while (True):
+        chosen=input()
         pid = os.fork()
         if pid == 0:  # child process
 
@@ -56,26 +79,9 @@ if __name__ == '__main__':
                 mongodb.close()
             if chosen == options[2]:  # analitycs
                 mongodb = Connect()
-                mongodb.client.close()
+                mongodb.close()
             if chosen == options[3]:  # statistics
                 mongodb = Connect()
-                print("Options:\n")
-                opt = ["city", "nation"]
-                for item in opt:
-                    print(item + "\n")
-                print("Select an option:")
-                type = input()
-                if type == "city":
-                    for item in mongodb.cities:
-                        print(item + "\n")
-                    print("Select an option:")
-                    place = input()
-                    mongodb.show_statistics(type, "CityID")
-
-                elif type == "nation":
-                    for item in mongodb.cities:
-                        print(item + "\n")
-                    print("Select an option:")
-                    place = input()
-                    mongodb.show_statistics(type, "NationID")
+                mongodb.manageStatistics()
                 mongodb.close()
+
