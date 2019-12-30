@@ -49,7 +49,6 @@ class Connect:
         month = now.strftime("%m")
         year = now.strftime("%Y")
 
-        # suppongo di voler prendere da dicembre 2018 a dicembre 2019
 
         db = self.client.test_databahse
         hotel_list = db.hotels.find({type: place})
