@@ -28,19 +28,19 @@ class Connect:
     def manageStatistics(self):
         opt=["averageRating", "serviceRating","cleanlinessRating", "positionRating"]
         for item in opt:
-            print(item + "\n")
+            print(item)
         chosen=input("Select evaluation attribute:\n")
         if chosen in opt:
-            plt = input("Select city or nation:\n")
+            plt = input("Select city or nation:")
             if plt == "city":
                 for item in self.cities:
-                    print(item + "\n")
+                    print(item )
                 city = input("Select city:\n")
                 if city in self.dictionary.keys():
                     self.computeAvg(chosen, self.dictionary[city], "CityID")
             elif plt=="nation":
                 for item in self.nations:
-                    print(item + "\n")
+                    print(item)
                 nation = input("Select city:\n")
                 if nation in self.dictionary.keys():
                     self.computeAvg(chosen, self.dictionary[nation], "NationID")
