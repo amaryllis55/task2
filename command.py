@@ -43,7 +43,6 @@ class Connect:
             if nation in self.dictionary.keys():
                 self.computeAnalysis(self.dictionary[nation], "NationID")
 
-
     def computeAnalysis(self, place, type):
         now = datetime.datetime.now()  # current date and time
         day = now.strftime("%d")
@@ -55,30 +54,27 @@ class Connect:
         db = self.client.test_databahse
         hotel_list = db.hotels.find({type: place})
         # hotel_list contiene tutti gli hotel nel posto place
-        averall_avgs = []
+        averall_avgs = {}
         for hotel in hotel_list:
-
             averages = []
             for i in range(12):
                 averages.append([])
             for id in hotel["reviewList"]:
                 rew = db.findOne({"_id": id})
-                #result = self.isAntecedent(rew["Day"], rew["Month"], rew[ "Year"])
-                if rew["Year"]== int(datetime.datetime.now().strftime("%Y")):
-                    averages[self.dates[datetime.datetime.now().strftime("%m")]-1].append(rew["Vote"])
+                # result = self.isAntecedent(rew["Day"], rew["Month"], rew[ "Year"])
+                if rew["Year"] == int(datetime.datetime.now().strftime("%Y")):
+                    averages[self.dates[datetime.datetime.now().strftime("%m")] - 1].append(rew["Vote"])
                     for i in range(len(averages)):
                         temp = 0
                         count = len(averages[i])
                         for it in averages[i]:
                             temp += it
                         averages[i] = temp / count
-                    averall_avgs.append([hotel["_id"], averages])
-
-
+                    averall_avgs[hotel["_id"]]= averages
 
     def isAntecedent(self, day, month, year):
         current_year = datetime.datetime.now().strftime("%Y")
-        if int(current_year) - int(year) <= 1 and self.dates[day]>=datetime.datetime.now().strftime("%d"):
+        if int(current_year) - int(year) <= 1 and self.dates[day] >= datetime.datetime.now().strftime("%d"):
             return True
         return False
 
