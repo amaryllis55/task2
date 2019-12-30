@@ -32,7 +32,7 @@ class Connect:
         plt = input("Select city or nation:\n")
         if plt == "city":
             for item in self.cities:
-                print(item[0])
+                print(item[0]+"\n")
             city = input("Select city:\n")
             if city in self.dictionary.keys():
                 self.computeAnalysis(self.dictionary[city], "CityID")
@@ -80,7 +80,7 @@ class Connect:
     def manageStatistics(self):
         opt = ["averageRating", "serviceRating", "cleanlinessRating", "positionRating"]
         for item in opt:
-            print(item)
+            print(item+"\n")
         chosen = input("Select evaluation attribute:\n")
         if chosen in opt:
             plt = input("Select city or nation:\n")
@@ -96,7 +96,9 @@ class Connect:
                 nation = input("Select city:\n")
                 if nation in self.dictionary.keys():
                     self.computeAvg(chosen, self.dictionary[nation], "NationID")
-
+            else:
+                print("The option is not valid.\n")
+                return
     def computeAvg(self, chosen, place, type):
         db = self.client.test_database
         numPos = db.hotels.count_documents({"$and": [{chosen: {"$gt": 6}}, {type: place}]})
