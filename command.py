@@ -57,29 +57,24 @@ class Connect:
 
         for hotel in hotel_list:
             averages = []
+
             for i in range(12):
                 averages.append([])
             for id in hotel["reviewList"]:
                 rew = db.findOne({"_id": id})
                 # result = self.isAntecedent(rew["Day"], rew["Month"], rew[ "Year"])
-                if rew["Year"] == int(datetime.datetime.now().strftime("%Y")):
-                    averages[self.dates[datetime.datetime.now().strftime("%m")] - 1].append(rew["Vote"])
+                if rew["Year"] == year and rew["Day"]>=day:
+                    averages[self.dates[month] - 1].append(rew["Vote"])
                     for i in range(len(averages)):
                         temp = 0
                         count = len(averages[i])
                         for it in averages[i]:
                             temp += it
                         averages[i] = temp / count
-                    averall_avgs[hotel["_id"]] = averages
+                    averall_avgs[hotel["_id"]] = [hotel["Name"], averages]
         print("average rating vote from the reviews month by month of the current year:\n")
         for i in averall_avgs:
             print(i, averall_avgs[i])  # stampa _id, avg
-
-    def isAntecedent(self, day, month, year):
-        current_year = datetime.datetime.now().strftime("%Y")
-        if int(current_year) - int(year) <= 1 and self.dates[day] >= datetime.datetime.now().strftime("%d"):
-            return True
-        return False
 
     def manageStatistics(self):
         opt = ["averageRating", "serviceRating", "cleanlinessRating", "positionRating"]
