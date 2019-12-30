@@ -29,24 +29,20 @@ class Connect:
         self.client.close()
 
     def manageAnalytics(self):
-        opt = ["averageRating", "serviceRating", "cleanlinessRating", "positionRating"]
-        for item in opt:
-            print(item)
-        chosen = input("Select evaluation attribute:\n")
-        if chosen in opt:
-            plt = input("Select city or nation:\n")
-            if plt == "city":
-                for item in self.cities:
-                    print(item[0])
-                city = input("Select city:\n")
-                if city in self.dictionary.keys():
-                    self.computeAnalysis(self.dictionary[city], "CityID")
-            elif plt == "nation":
-                for item in self.nations:
-                    print(item[0])
-                nation = input("Select nation:\n")
-                if nation in self.dictionary.keys():
-                    self.computeAnalysis(self.dictionary[nation], "NationID")
+        plt = input("Select city or nation:\n")
+        if plt == "city":
+            for item in self.cities:
+                print(item[0])
+            city = input("Select city:\n")
+            if city in self.dictionary.keys():
+                self.computeAnalysis(self.dictionary[city], "CityID")
+        elif plt == "nation":
+            for item in self.nations:
+                print(item[0])
+            nation = input("Select nation:\n")
+            if nation in self.dictionary.keys():
+                self.computeAnalysis(self.dictionary[nation], "NationID")
+
 
     def computeAnalysis(self, place, type):
         now = datetime.datetime.now()  # current date and time
